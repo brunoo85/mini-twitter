@@ -4,6 +4,7 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FooterFormAuth } from "./footer-form-auth";
+import { useCreateUser } from "@/hooks/mutation/auth/useCreateUser";
 
 interface IRegisterTabProps {
   showPasswordRegister: boolean;
@@ -32,8 +33,15 @@ export function RegisterTab({
     formState: { errors },
   } = useForm<RegisterForm>({ resolver: zodResolver(registerSchema) });
 
-  const onSubmit = (data: RegisterForm) => {
-    console.log("Dados do formulário de registro:", data);
+  const { mutateAsync: registerUser, isLoading } = useCreateUser();
+
+  const onSubmit = async (data: RegisterForm) => {
+    try {
+      await registerUser(data);
+      console.log("Usuário criado!");
+    } catch (error) {
+      console.error("Erro ao criar:", error);
+    }
   };
 
   return (
