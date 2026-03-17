@@ -10,25 +10,27 @@ export function AuthForm() {
   return (
     <div className="w-full max-w-md mx-auto h-120">
       <Tabs defaultValue="login" className="w-full h-full">
-        <TabsList className="w-full bg-transparent p-0 h-auto rounded-none border-b border-border font-['Roboto']">
+        <TabsList className="w-full bg-transparent p-0 h-auto rounded-none border-b border-border">
           <TabsTrigger
             value="login"
-            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary bg-transparent text-muted-foreground pb-3 pt-2 font-medium data-[state=active]:shadow-none "
+            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:bg-transparent data-[state=active]:text-primary bg-transparent text-muted-foreground pb-3 pt-2 font-medium data-[state=active]:shadow-none! "
           >
             Login
           </TabsTrigger>
           <TabsTrigger
             value="cadastrar"
-            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary bg-transparent text-muted-foreground pb-3 pt-2 font-medium data-[state=active]:shadow-none"
+            className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:bg-transparent data-[state=active]:text-primary bg-transparent text-muted-foreground pb-3 pt-2 font-medium data-[state=active]:shadow-none!"
           >
-            Cadastrar
+            Cadastra
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="login" className="mt-8">
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-primary">Olá, de novo!</h2>
+              <h2 className="text-2xl font-bold text-primary font-['Roboto']">
+                Olá, de novo!
+              </h2>
               <p className="text-muted-foreground mt-1">
                 Por favor, insira os seus dados para fazer login.
               </p>
@@ -75,13 +77,13 @@ export function AuthForm() {
 
               <Button
                 type="submit"
-                className="w-full h-12 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base mt-6"
+                className="w-full h-12 rounded-full border-none bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base mt-6 shadow-lg shadow-primary/20"
               >
                 Continuar
               </Button>
             </form>
 
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="mx-auto self-center text-center text-xs text-muted-foreground max-w-75">
               Ao clicar em continuar, você concorda com nossos{" "}
               <a href="#" className="underline hover:text-foreground">
                 Termos de Serviço
