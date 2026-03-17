@@ -4,6 +4,9 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FooterFormAuth } from "./footer-form-auth";
+import { useNavigate } from "react-router-dom";
+import { authService } from "@/services/auth.service";
+import { toast } from "sonner";
 
 interface ILoginTabProps {
   showPassword: boolean;
@@ -20,14 +23,23 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 
 export function LoginTab({ showPassword, setShowPassword }: ILoginTabProps) {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
+    // setError,
     formState: { errors },
   } = useForm<LoginForm>({ resolver: zodResolver(loginSchema) });
 
-  const onSubmit = (data: LoginForm) => {
-    console.log("Dados do formulário de login:", data);
+  const onSubmit = async (data: LoginForm) => {
+    try {
+      const response = await authService.login(data);
+      localStorage.setItem("token", response.data.token);
+      navigate("/posts");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.error ?? "E-mail ou senha inválidos");
+    }
   };
 
   return (

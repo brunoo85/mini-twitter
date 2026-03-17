@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { FooterFormAuth } from "./footer-form-auth";
 import { useCreateUser } from "@/hooks/mutation/auth/useCreateUser";
 import { useNavigate } from "react-router-dom";
-import { Toaster } from "../ui/sonner";
 import { toast } from "sonner";
 
 interface IRegisterTabProps {
