@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { FooterFormAuth } from "./footer-form-auth";
 import { useCreateUser } from "@/hooks/mutation/auth/useCreateUser";
 import { useNavigate } from "react-router-dom";
+import { Toaster } from "../ui/sonner";
+import { toast } from "sonner";
 
 interface IRegisterTabProps {
   showPasswordRegister: boolean;
@@ -31,6 +33,7 @@ export function RegisterTab({
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<RegisterForm>({ resolver: zodResolver(registerSchema) });
 
@@ -42,8 +45,19 @@ export function RegisterTab({
     try {
       await registerUser(data);
       navigate("/posts");
-    } catch (error) {
-      console.error("Erro ao criar:", error);
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        const backendMessage = error.response.data.message;
+
+        if (backendMessage.includes("email")) {
+          setError("email", {
+            type: "manual",
+            message: "Este email já está sendo utilizado.",
+          });
+        } else {
+          toast.error(backendMessage);
+        }
+      }
     }
   };
 
