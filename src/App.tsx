@@ -1,4 +1,4 @@
-import { AuthForm } from "./components/auth-form";
+import { AuthForm } from "./components/auth-form/auth-form";
 import { ThemeToggle } from "./components/theme-toggle";
 import "./index.css";
 import { TooltipProvider } from "./components/ui/tooltip";

@@ -1,8 +1,9 @@
 import { Eye, EyeOff, Mail } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FooterFormAuth } from "./footer-form-auth";
 
 interface ILoginTabProps {
   showPassword: boolean;
@@ -10,10 +11,10 @@ interface ILoginTabProps {
 }
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "E-mail inválido" }),
+  email: z.email({ error: "E-mail inválido" }),
   password: z
     .string()
-    .min(6, { message: "A senha deve conter no mínimo 6 caracteres" }),
+    .min(6, { error: "A senha deve conter no mínimo 6 caracteres" }),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
@@ -100,17 +101,7 @@ export function LoginTab({ showPassword, setShowPassword }: ILoginTabProps) {
         </Button>
       </form>
 
-      <p className="mx-auto self-center text-center text-xs text-muted-foreground max-w-75">
-        Ao clicar em continuar, você concorda com nossos{" "}
-        <a href="#" className="underline hover:text-foreground">
-          Termos de Serviço
-        </a>{" "}
-        e{" "}
-        <a href="#" className="underline hover:text-foreground">
-          Política de Privacidade
-        </a>
-        .
-      </p>
+      <FooterFormAuth />
     </div>
   );
 }
