@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Mail, Eye, EyeOff, User } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { LoginTab } from "./login-tab";
 
 export function AuthForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,75 +27,10 @@ export function AuthForm() {
         </TabsList>
 
         <TabsContent value="login" className="mt-8">
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-primary font-['Roboto']">
-                Olá, de novo!
-              </h2>
-              <p className="text-muted-foreground mt-1">
-                Por favor, insira os seus dados para fazer login.
-              </p>
-            </div>
-
-            <form className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">
-                  E-mail
-                </label>
-                <div className="relative">
-                  <input
-                    type="email"
-                    placeholder="Insira o seu e-mail"
-                    className="w-full h-12 px-4 pr-12 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                  />
-                  <Mail className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">
-                  Senha
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Insira a sua senha"
-                    className="w-full h-12 px-4 pr-12 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5" />
-                    ) : (
-                      <Eye className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full h-12 rounded-full border-none bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base mt-6 shadow-lg shadow-primary/20"
-              >
-                Continuar
-              </Button>
-            </form>
-
-            <p className="mx-auto self-center text-center text-xs text-muted-foreground max-w-75">
-              Ao clicar em continuar, você concorda com nossos{" "}
-              <a href="#" className="underline hover:text-foreground">
-                Termos de Serviço
-              </a>{" "}
-              e{" "}
-              <a href="#" className="underline hover:text-foreground">
-                Política de Privacidade
-              </a>
-              .
-            </p>
-          </div>
+          <LoginTab
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+          />
         </TabsContent>
 
         <TabsContent value="cadastrar" className="mt-8">

@@ -1,0 +1,116 @@
+import { Eye, EyeOff, Mail } from "lucide-react";
+import { Button } from "./ui/button";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+interface ILoginTabProps {
+  showPassword: boolean;
+  setShowPassword: (value: boolean) => void;
+}
+
+const loginSchema = z.object({
+  email: z.string().email({ message: "E-mail inválido" }),
+  password: z
+    .string()
+    .min(6, { message: "A senha deve conter no mínimo 6 caracteres" }),
+});
+
+type LoginForm = z.infer<typeof loginSchema>;
+
+export function LoginTab({ showPassword, setShowPassword }: ILoginTabProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginForm>({ resolver: zodResolver(loginSchema) });
+
+  const onSubmit = (data: LoginForm) => {
+    console.log("Dados do formulário de login:", data);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-primary font-['Roboto']">
+          Olá, de novo!
+        </h2>
+        <p className="text-muted-foreground mt-1">
+          Por favor, insira os seus dados para fazer login.
+        </p>
+      </div>
+
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-foreground">E-mail</label>
+          <div className="relative">
+            <input
+              {...register("email")}
+              type="email"
+              placeholder="Insira o seu e-mail"
+              className="w-full h-12 px-4 pr-12 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+            />
+            <Mail className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          </div>
+          {errors.email && (
+            <p className="text-red-500 text-sm">
+              {typeof errors.email.message === "string"
+                ? errors.email.message
+                : "E-mail inválido"}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-foreground">Senha</label>
+          <div className="relative">
+            <input
+              {...register("password")}
+              type={showPassword ? "text" : "password"}
+              placeholder="Insira a sua senha"
+              className="w-full h-12 px-4 pr-12 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+          {errors.password && (
+            <p className="text-red-500 text-sm">
+              {typeof errors.password.message === "string"
+                ? errors.password.message
+                : "Senha inválida"}
+            </p>
+          )}
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full h-12 rounded-full border-none bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base mt-6 shadow-lg shadow-primary/20"
+        >
+          Continuar
+        </Button>
+      </form>
+
+      <p className="mx-auto self-center text-center text-xs text-muted-foreground max-w-75">
+        Ao clicar em continuar, você concorda com nossos{" "}
+        <a href="#" className="underline hover:text-foreground">
+          Termos de Serviço
+        </a>{" "}
+        e{" "}
+        <a href="#" className="underline hover:text-foreground">
+          Política de Privacidade
+        </a>
+        .
+      </p>
+    </div>
+  );
+}
