@@ -12,12 +12,6 @@ import { useAuth } from "./authContext";
 interface PostsContextType {
   posts: PostsResponse | null;
   currentUser: User | null;
-  addPost: (
-    post: Omit<
-      Post,
-      "id" | "authorId" | "authorName" | "createdAt" | "likes" | "likedByUser"
-    >,
-  ) => void;
   updatePost: (
     id: string,
     data: Partial<Pick<Post, "title" | "content" | "image">>,
@@ -39,27 +33,27 @@ const PostsContext = createContext<PostsContextType | undefined>(undefined);
 function generateMorePosts(startIndex: number, count: number): Post[] {
   const authors = [
     {
-      id: "user-6",
+      id: 77,
       name: "Lucas Oliveira",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=lucas",
     },
     {
-      id: "user-7",
+      id: 88,
       name: "Fernanda Souza",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=fernanda",
     },
     {
-      id: "user-8",
+      id: 99,
       name: "Carlos Mendes",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=carlos",
     },
     {
-      id: "user-9",
+      id: 101,
       name: "Beatriz Ramos",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=beatriz",
     },
     {
-      id: "user-10",
+      id: 102,
       name: "Gabriel Ferreira",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=gabriel",
     },
@@ -103,7 +97,7 @@ function generateMorePosts(startIndex: number, count: number): Post[] {
     const author = authors[index % authors.length];
     const imageUrl = images[index % images.length];
     return {
-      id: `generated-${index}`,
+      id: index,
       title: titles[index % titles.length],
       content: contents[index % contents.length],
       image: imageUrl ? new URL(imageUrl) : undefined,
@@ -117,56 +111,28 @@ function generateMorePosts(startIndex: number, count: number): Post[] {
 }
 
 export function PostsProvider({ children }: { children: ReactNode }) {
-  // const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS);
   const [loadedCount, setLoadedCount] = useState(5);
   const [hasMore, setHasMore] = useState(true);
   const { currentUser } = useAuth();
   const { data: posts } = useGetPosts();
 
-  const addPost = useCallback(
-    (
-      post: Omit<
-        Post,
-        | "id"
-        | "authorId"
-        | "authorName"
-        | "authorAvatar"
-        | "createdAt"
-        | "likes"
-        | "likedByUser"
-      >,
-    ) => {
-      const newPost: Post = {
-        ...post,
-        id: `post-${Date.now()}`,
-        authorId: currentUser?.id,
-        authorName: currentUser?.name,
-        createdAt: new Date(),
-        likesCount: 0,
-        likedByUser: false,
-      };
-      // setPosts((prev) => [newPost, ...prev]);
-    },
-    [],
-  );
-
   const updatePost = useCallback(
     (id: string, data: Partial<Pick<Post, "title" | "content" | "image">>) => {
       // setPosts((prev) =>
-      //   prev.map((post) => (post.id === id ? { ...post, ...data } : post)),
+      //   prev.map((post) => (post.id === _id ? { ...post, ..._data } : post)),
       // );
     },
     [],
   );
 
   const deletePost = useCallback((id: string) => {
-    // setPosts((prev) => prev.filter((post) => post.id !== id));
+    // setPosts((prev) => prev.filter((post) => post.id !== _id));
   }, []);
 
   const toggleLike = useCallback((id: string) => {
     // setPosts((prev) =>
     //   prev.map((post) =>
-    //     post.id === id
+    //     post.id === _id
     //       ? {
     //           ...post,
     //           likedByUser: !post.likedByUser,
@@ -184,7 +150,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
       setHasMore(false);
       return;
     }
-    const newPosts = generateMorePosts(loadedCount, 5);
+    // const newPosts = generateMorePosts(loadedCount, 5);
     // setPosts((prev) => [...prev, ...newPosts]);
     setLoadedCount((prev) => prev + 5);
   }, [loadedCount]);
@@ -194,7 +160,6 @@ export function PostsProvider({ children }: { children: ReactNode }) {
       value={{
         posts,
         currentUser,
-        addPost,
         updatePost,
         deletePost,
         toggleLike,

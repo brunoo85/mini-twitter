@@ -7,9 +7,9 @@ export const postsService = {
 
   create: (data: FormData | object) => api.post("/posts", data),
 
-  update: (id: string, data: object) => api.put(`/posts/${id}`, data),
+  update: (id: number, data: object) => api.put(`/posts/${id}`, data),
 
-  delete: (id: string) => api.delete(`/posts/${id}`),
+  delete: (id: number) => api.delete(`/posts/${id}`),
 
-  like: (id: string) => api.post(`/posts/${id}/like`),
+  like: (id: number) => api.post(`/posts/${id}/like`),
 };

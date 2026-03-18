@@ -11,23 +11,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { usePosts } from "@/context/postContext";
+import { useCreatePost } from "@/hooks/mutation/posts/useCreatePost";
 
 export function CreatePostForm() {
-  const { currentUser, addPost } = usePosts();
+  const { currentUser } = usePosts();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [showImageInput, setShowImageInput] = useState(false);
 
+  const { mutate: createPost } = useCreatePost();
+
   const handleSubmit = (e: React.FormEvent) => {
+    console.log("deu certo");
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 
-    addPost({
+    createPost({
       title: title.trim(),
       content: content.trim(),
       image: imageUrl.trim() ? new URL(imageUrl.trim()) : undefined,
-      likesCount: 0,
     });
 
     setTitle("");
@@ -37,7 +40,7 @@ export function CreatePostForm() {
   };
 
   const isValid = title.trim().length > 0 && content.trim().length > 0;
-  console.log({ currentUser });
+
   return (
     <Card className="border-primary/20 shadow-sm">
       <form onSubmit={handleSubmit}>
