@@ -24,19 +24,21 @@ export function PostsPage() {
   };
 
   const { posts, loadMorePosts, hasMore } = usePosts();
+  console.log({ posts, isArray: Array.isArray(posts), type: typeof posts });
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const filteredPosts = useMemo(() => {
-    if (!searchQuery.trim()) return posts;
-
+    const basePosts = Array.isArray(posts?.posts) ? posts.posts : [];
+    if (!searchQuery.trim()) return basePosts;
     const query = searchQuery.toLowerCase().trim();
-    return posts.filter(
+
+    return basePosts.filter(
       (post) =>
-        post.title.toLowerCase().includes(query) ||
-        post.content.toLowerCase().includes(query),
+        post?.title?.toLowerCase()?.includes(query) ||
+        post?.content?.toLowerCase()?.includes(query),
     );
   }, [posts, searchQuery]);
 
@@ -104,14 +106,14 @@ export function PostsPage() {
 
             {searchQuery && (
               <p className="text-sm text-muted-foreground">
-                {filteredPosts.length === 0
+                {filteredPosts?.length === 0
                   ? "Nenhum resultado encontrado"
                   : `${filteredPosts.length} ${filteredPosts.length === 1 ? "resultado" : "resultados"} para "${searchQuery}"`}
               </p>
             )}
 
             <div className="space-y-4">
-              {filteredPosts.length === 0 ? (
+              {filteredPosts?.length === 0 ? (
                 <CustomEmpty
                   icon={<MessageSquare className="h-12 w-12" />}
                   title={
@@ -124,7 +126,7 @@ export function PostsPage() {
                   }
                 />
               ) : (
-                filteredPosts.map((post) => (
+                filteredPosts?.map((post) => (
                   <PostCard
                     key={post.id}
                     post={post}
@@ -145,11 +147,13 @@ export function PostsPage() {
               </div>
             )}
 
-            {!searchQuery.trim() && !hasMore && posts.length > 0 && (
-              <p className="text-center text-muted-foreground py-8">
-                Você chegou ao fim do feed!
-              </p>
-            )}
+            {!searchQuery.trim() &&
+              !hasMore &&
+              (posts?.posts?.length ?? 0) > 0 && (
+                <p className="text-center text-muted-foreground py-8">
+                  Você chegou ao fim do feed!
+                </p>
+              )}
           </div>
         </div>
       </div>

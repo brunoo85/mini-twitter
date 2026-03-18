@@ -29,28 +29,12 @@ import { cn } from "@/lib/utils";
 import { usePosts } from "@/context/postContext";
 import { EditPostDialog } from "./edit-post-dialog";
 import { useModal } from "@/hooks/use-auth-modal";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 interface PostCardProps {
   post: Post;
   canInteract: boolean;
-}
-
-function formatRelativeTime(date: Date): string {
-  const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-  if (diffInSeconds < 60) {
-    return "agora mesmo";
-  } else if (diffInSeconds < 3600) {
-    const minutes = Math.floor(diffInSeconds / 60);
-    return `há ${minutes} ${minutes === 1 ? "minuto" : "minutos"}`;
-  } else if (diffInSeconds < 86400) {
-    const hours = Math.floor(diffInSeconds / 3600);
-    return `há ${hours} ${hours === 1 ? "hora" : "horas"}`;
-  } else {
-    const days = Math.floor(diffInSeconds / 86400);
-    return `há ${days} ${days === 1 ? "dia" : "dias"}`;
-  }
 }
 
 export function PostCard({ post, canInteract }: PostCardProps) {
@@ -86,7 +70,7 @@ export function PostCard({ post, canInteract }: PostCardProps) {
                   {post.authorName}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {formatRelativeTime(post.createdAt)}
+                  {format(post.createdAt, "Pp", { locale: ptBR })}
                 </p>
               </div>
               {isAuthor && (

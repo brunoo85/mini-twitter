@@ -1,4 +1,5 @@
-import type { Post, User } from "@/lib/types";
+import { useGetPosts } from "@/hooks/query/posts/useGetPosts";
+import type { Post, PostsResponse, User } from "@/lib/types";
 import {
   createContext,
   useContext,
@@ -10,69 +11,68 @@ import {
 const CURRENT_USER: User = {
   id: "user-1",
   name: "Você",
-  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=user1",
 };
 
-const INITIAL_POSTS: Post[] = [
-  {
-    id: "1",
-    title: "Bem-vindos ao Feed!",
-    content:
-      "Este é o primeiro post do nosso feed social. Compartilhe suas ideias e conecte-se com outros usuários!",
-    authorId: "user-2",
-    authorName: "Maria Silva",
-    createdAt: new Date(Date.now() - 3600000),
-    likesCount: 15,
-    likedByUser: false,
-  },
-  {
-    id: "2",
-    title: "Dicas de Produtividade",
-    content:
-      "Aqui estão algumas dicas para melhorar sua produtividade: 1. Defina metas claras 2. Use a técnica Pomodoro 3. Faça pausas regulares",
-    authorId: "user-3",
-    authorName: "João Santos",
-    createdAt: new Date(Date.now() - 7200000),
-    likesCount: 32,
-    likedByUser: true,
-  },
-  {
-    id: "3",
-    title: "Paisagem incrível",
-    content:
-      "Olha essa vista que encontrei durante minha viagem! A natureza é simplesmente maravilhosa.",
-    authorId: "user-4",
-    authorName: "Ana Costa",
-    createdAt: new Date(Date.now() - 10800000),
-    likesCount: 58,
-    likedByUser: false,
-  },
-  {
-    id: "4",
-    title: "Novo projeto em andamento",
-    content:
-      "Estou muito animado com meu novo projeto de desenvolvimento. Mal posso esperar para compartilhar mais detalhes!",
-    authorId: "user-1",
-    authorName: "Você",
-    createdAt: new Date(Date.now() - 14400000),
-    likesCount: 8,
-    likedByUser: false,
-  },
-  {
-    id: "5",
-    title: "Receita do dia",
-    content:
-      "Fiz um bolo de chocolate delicioso hoje! A receita é super simples e o resultado fica incrível. Quem quer a receita?",
-    authorId: "user-5",
-    authorName: "Pedro Lima",
-    createdAt: new Date(Date.now() - 18000000),
-    likesCount: 45,
-    likedByUser: true,
-  },
-];
+// const INITIAL_POSTS: Post[] = [
+//   {
+//     id: "1",
+//     title: "Bem-vindos ao Feed!",
+//     content:
+//       "Este é o primeiro post do nosso feed social. Compartilhe suas ideias e conecte-se com outros usuários!",
+//     authorId: "user-2",
+//     authorName: "Maria Silva",
+//     createdAt: new Date(Date.now() - 3600000),
+//     likesCount: 15,
+//     likedByUser: false,
+//   },
+//   {
+//     id: "2",
+//     title: "Dicas de Produtividade",
+//     content:
+//       "Aqui estão algumas dicas para melhorar sua produtividade: 1. Defina metas claras 2. Use a técnica Pomodoro 3. Faça pausas regulares",
+//     authorId: "user-3",
+//     authorName: "João Santos",
+//     createdAt: new Date(Date.now() - 7200000),
+//     likesCount: 32,
+//     likedByUser: true,
+//   },
+//   {
+//     id: "3",
+//     title: "Paisagem incrível",
+//     content:
+//       "Olha essa vista que encontrei durante minha viagem! A natureza é simplesmente maravilhosa.",
+//     authorId: "user-4",
+//     authorName: "Ana Costa",
+//     createdAt: new Date(Date.now() - 10800000),
+//     likesCount: 58,
+//     likedByUser: false,
+//   },
+//   {
+//     id: "4",
+//     title: "Novo projeto em andamento",
+//     content:
+//       "Estou muito animado com meu novo projeto de desenvolvimento. Mal posso esperar para compartilhar mais detalhes!",
+//     authorId: "user-1",
+//     authorName: "Você",
+//     createdAt: new Date(Date.now() - 14400000),
+//     likesCount: 8,
+//     likedByUser: false,
+//   },
+//   {
+//     id: "5",
+//     title: "Receita do dia",
+//     content:
+//       "Fiz um bolo de chocolate delicioso hoje! A receita é super simples e o resultado fica incrível. Quem quer a receita?",
+//     authorId: "user-5",
+//     authorName: "Pedro Lima",
+//     createdAt: new Date(Date.now() - 18000000),
+//     likesCount: 45,
+//     likedByUser: true,
+//   },
+// ];
 
 interface PostsContextType {
-  posts: Post[];
+  posts: PostsResponse | null;
   currentUser: User;
   addPost: (
     post: Omit<
@@ -89,6 +89,12 @@ interface PostsContextType {
   loadMorePosts: () => void;
   hasMore: boolean;
 }
+
+// const initialState: PostsContextType = {
+//   posts: [], // array vazio por padrão
+//   loadMorePosts: () => {},
+//   hasMore: true,
+// };
 
 const PostsContext = createContext<PostsContextType | undefined>(undefined);
 
@@ -173,9 +179,11 @@ function generateMorePosts(startIndex: number, count: number): Post[] {
 }
 
 export function PostsProvider({ children }: { children: ReactNode }) {
-  const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS);
+  // const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS);
   const [loadedCount, setLoadedCount] = useState(5);
   const [hasMore, setHasMore] = useState(true);
+
+  const { data: posts } = useGetPosts();
 
   const addPost = useCallback(
     (
@@ -199,38 +207,38 @@ export function PostsProvider({ children }: { children: ReactNode }) {
         likesCount: 0,
         likedByUser: false,
       };
-      setPosts((prev) => [newPost, ...prev]);
+      // setPosts((prev) => [newPost, ...prev]);
     },
     [],
   );
 
   const updatePost = useCallback(
     (id: string, data: Partial<Pick<Post, "title" | "content" | "image">>) => {
-      setPosts((prev) =>
-        prev.map((post) => (post.id === id ? { ...post, ...data } : post)),
-      );
+      // setPosts((prev) =>
+      //   prev.map((post) => (post.id === id ? { ...post, ...data } : post)),
+      // );
     },
     [],
   );
 
   const deletePost = useCallback((id: string) => {
-    setPosts((prev) => prev.filter((post) => post.id !== id));
+    // setPosts((prev) => prev.filter((post) => post.id !== id));
   }, []);
 
   const toggleLike = useCallback((id: string) => {
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === id
-          ? {
-              ...post,
-              likedByUser: !post.likedByUser,
-              likes: post.likedByUser
-                ? post.likesCount - 1
-                : post.likesCount + 1,
-            }
-          : post,
-      ),
-    );
+    // setPosts((prev) =>
+    //   prev.map((post) =>
+    //     post.id === id
+    //       ? {
+    //           ...post,
+    //           likedByUser: !post.likedByUser,
+    //           likes: post.likedByUser
+    //             ? post.likesCount - 1
+    //             : post.likesCount + 1,
+    //         }
+    //       : post,
+    //   ),
+    // );
   }, []);
 
   const loadMorePosts = useCallback(() => {
@@ -239,7 +247,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
       return;
     }
     const newPosts = generateMorePosts(loadedCount, 5);
-    setPosts((prev) => [...prev, ...newPosts]);
+    // setPosts((prev) => [...prev, ...newPosts]);
     setLoadedCount((prev) => prev + 5);
   }, [loadedCount]);
 
