@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -45,10 +43,11 @@ export function EditPostDialog({
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 
+    const trimmedImageUrl = String(imageUrl).trim();
     updatePost(post.id, {
       title: title.trim(),
       content: content.trim(),
-      image: imageUrl.trim() || undefined,
+      image: trimmedImageUrl ? new URL(trimmedImageUrl) : undefined,
     });
     onOpenChange(false);
   };
@@ -92,7 +91,9 @@ export function EditPostDialog({
             <div className="flex gap-2">
               <Input
                 id="edit-image"
-                value={imageUrl}
+                value={
+                  typeof imageUrl === "string" ? imageUrl : imageUrl.toString()
+                }
                 onChange={(e) => setImageUrl(e.target.value)}
                 placeholder="https://exemplo.com/imagem.jpg"
                 type="url"
@@ -115,7 +116,9 @@ export function EditPostDialog({
           {imageUrl && (
             <div className="relative overflow-hidden rounded-lg border">
               <img
-                src={imageUrl}
+                src={
+                  typeof imageUrl === "string" ? imageUrl : imageUrl.toString()
+                }
                 alt="Pré-visualização"
                 className="w-full h-32 object-cover"
                 onError={(e) => {

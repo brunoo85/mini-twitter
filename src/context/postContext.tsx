@@ -1,5 +1,3 @@
-"use client";
-
 import type { Post, User } from "@/lib/types";
 import {
   createContext,
@@ -79,13 +77,7 @@ interface PostsContextType {
   addPost: (
     post: Omit<
       Post,
-      | "id"
-      | "authorId"
-      | "authorName"
-      | "authorAvatar"
-      | "createdAt"
-      | "likes"
-      | "likedByUser"
+      "id" | "authorId" | "authorName" | "createdAt" | "likes" | "likedByUser"
     >,
   ) => void;
   updatePost: (
