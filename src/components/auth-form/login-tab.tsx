@@ -36,7 +36,7 @@ export function LoginTab({ showPassword, setShowPassword }: ILoginTabProps) {
     try {
       const response = await authService.login(data);
       localStorage.setItem("token-user", response.data.token);
-      navigate("/posts");
+      navigate("/");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error?.response?.data?.error ?? "E-mail ou senha inválidos");

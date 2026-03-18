@@ -11,8 +11,8 @@ function App() {
       <ModalProvider />
       <Toaster richColors />
       <Routes>
-        <Route path="/" element={<AuthPage />} />
-        <Route path="posts" element={<PostsPage />} />
+        <Route path="/" element={<PostsPage />} />
+        <Route path="/login" element={<AuthPage />} />
       </Routes>
     </>
   );

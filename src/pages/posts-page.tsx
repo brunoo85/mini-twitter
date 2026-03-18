@@ -2,6 +2,7 @@ import { CustomEmpty } from "@/components/custom-empty";
 import { CreatePostForm } from "@/components/posts-page/create-post-form";
 import { PostCard } from "@/components/posts-page/post-card";
 import { SearchBar } from "@/components/posts-page/search-bar";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { usePosts } from "@/context/postContext";
 import { authService } from "@/services/auth.service";
@@ -16,7 +17,7 @@ export function PostsPage() {
   const logOut = async () => {
     try {
       await authService.logout();
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.error(error);
     }
@@ -88,8 +89,10 @@ export function PostsPage() {
             {isLoggedIn ? (
               <Button onClick={logOut}>Logout</Button>
             ) : (
-              <Button onClick={() => navigate("/")}>Login</Button>
+              <Button onClick={() => navigate("/login")}>Login</Button>
             )}
+
+            <ThemeToggle />
           </header>
 
           <div className="space-y-6">

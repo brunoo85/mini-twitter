@@ -17,7 +17,7 @@ export const AuthModal = () => {
 
   const handleRedirect = () => {
     onClose();
-    navigate("/");
+    navigate("/login");
   };
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>

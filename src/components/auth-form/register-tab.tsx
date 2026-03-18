@@ -43,7 +43,7 @@ export function RegisterTab({
   const onSubmit = async (data: RegisterForm) => {
     try {
       await registerUser(data);
-      navigate("/posts");
+      navigate("/");
     } catch (error: any) {
       if (error.response?.status === 400) {
         const backendMessage = error.response.data.message;
@@ -117,7 +117,7 @@ export function RegisterTab({
               {...register("password")}
               type={showPasswordRegister ? "text" : "password"}
               placeholder="Insira a sua senha"
-              className="w-full h-12 px-4 pr-12 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+              className="w-full h-12 px-4 pr-12 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all [&::-webkit-inner-spin-button]:appearance-none no-reveal-icon"
             />
             <button
               type="button"
