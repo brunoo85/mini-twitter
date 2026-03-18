@@ -7,73 +7,11 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-
-const CURRENT_USER: User = {
-  id: "user-1",
-  name: "Você",
-};
-
-// const INITIAL_POSTS: Post[] = [
-//   {
-//     id: "1",
-//     title: "Bem-vindos ao Feed!",
-//     content:
-//       "Este é o primeiro post do nosso feed social. Compartilhe suas ideias e conecte-se com outros usuários!",
-//     authorId: "user-2",
-//     authorName: "Maria Silva",
-//     createdAt: new Date(Date.now() - 3600000),
-//     likesCount: 15,
-//     likedByUser: false,
-//   },
-//   {
-//     id: "2",
-//     title: "Dicas de Produtividade",
-//     content:
-//       "Aqui estão algumas dicas para melhorar sua produtividade: 1. Defina metas claras 2. Use a técnica Pomodoro 3. Faça pausas regulares",
-//     authorId: "user-3",
-//     authorName: "João Santos",
-//     createdAt: new Date(Date.now() - 7200000),
-//     likesCount: 32,
-//     likedByUser: true,
-//   },
-//   {
-//     id: "3",
-//     title: "Paisagem incrível",
-//     content:
-//       "Olha essa vista que encontrei durante minha viagem! A natureza é simplesmente maravilhosa.",
-//     authorId: "user-4",
-//     authorName: "Ana Costa",
-//     createdAt: new Date(Date.now() - 10800000),
-//     likesCount: 58,
-//     likedByUser: false,
-//   },
-//   {
-//     id: "4",
-//     title: "Novo projeto em andamento",
-//     content:
-//       "Estou muito animado com meu novo projeto de desenvolvimento. Mal posso esperar para compartilhar mais detalhes!",
-//     authorId: "user-1",
-//     authorName: "Você",
-//     createdAt: new Date(Date.now() - 14400000),
-//     likesCount: 8,
-//     likedByUser: false,
-//   },
-//   {
-//     id: "5",
-//     title: "Receita do dia",
-//     content:
-//       "Fiz um bolo de chocolate delicioso hoje! A receita é super simples e o resultado fica incrível. Quem quer a receita?",
-//     authorId: "user-5",
-//     authorName: "Pedro Lima",
-//     createdAt: new Date(Date.now() - 18000000),
-//     likesCount: 45,
-//     likedByUser: true,
-//   },
-// ];
+import { useAuth } from "./authContext";
 
 interface PostsContextType {
   posts: PostsResponse | null;
-  currentUser: User;
+  currentUser: User | null;
   addPost: (
     post: Omit<
       Post,
@@ -182,7 +120,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
   // const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS);
   const [loadedCount, setLoadedCount] = useState(5);
   const [hasMore, setHasMore] = useState(true);
-
+  const { currentUser } = useAuth();
   const { data: posts } = useGetPosts();
 
   const addPost = useCallback(
@@ -201,8 +139,8 @@ export function PostsProvider({ children }: { children: ReactNode }) {
       const newPost: Post = {
         ...post,
         id: `post-${Date.now()}`,
-        authorId: CURRENT_USER.id,
-        authorName: CURRENT_USER.name,
+        authorId: currentUser?.id,
+        authorName: currentUser?.name,
         createdAt: new Date(),
         likesCount: 0,
         likedByUser: false,
@@ -255,7 +193,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
     <PostsContext.Provider
       value={{
         posts,
-        currentUser: CURRENT_USER,
+        currentUser,
         addPost,
         updatePost,
         deletePost,

@@ -7,6 +7,7 @@ import { FooterFormAuth } from "./footer-form-auth";
 import { useNavigate } from "react-router-dom";
 import { authService } from "@/services/auth.service";
 import { toast } from "sonner";
+import { useAuth } from "@/context/authContext";
 
 interface ILoginTabProps {
   showPassword: boolean;
@@ -24,6 +25,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 
 export function LoginTab({ showPassword, setShowPassword }: ILoginTabProps) {
   const navigate = useNavigate();
+  const { setCurrentUser } = useAuth();
 
   const {
     register,
@@ -36,6 +38,7 @@ export function LoginTab({ showPassword, setShowPassword }: ILoginTabProps) {
     try {
       const response = await authService.login(data);
       localStorage.setItem("token-user", response.data.token);
+      setCurrentUser(response.data.user);
       navigate("/");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

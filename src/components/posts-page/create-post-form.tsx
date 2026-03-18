@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ImagePlus, Send, UserCircle2, X } from "lucide-react";
+import { ImagePlus, Send, X } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,15 +37,14 @@ export function CreatePostForm() {
   };
 
   const isValid = title.trim().length > 0 && content.trim().length > 0;
-
+  console.log({ currentUser });
   return (
     <Card className="border-primary/20 shadow-sm">
       <form onSubmit={handleSubmit}>
         <CardHeader className="flex flex-row items-start gap-4 space-y-0 pb-2">
           <Avatar className="h-12 w-12 flex items-center justify-center">
-            <UserCircle2 size={60} strokeWidth={0.8} />
             <AvatarFallback>
-              {currentUser.name.slice(0, 2).toUpperCase()}
+              {currentUser?.name.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 space-y-3">

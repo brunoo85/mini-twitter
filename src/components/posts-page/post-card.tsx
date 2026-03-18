@@ -42,7 +42,7 @@ export function PostCard({ post, canInteract }: PostCardProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
-  const isAuthor = post.authorId === currentUser.id;
+  const isAuthor = post.authorId === currentUser?.id;
   const { onOpen } = useModal();
 
   const handleLike = () => {

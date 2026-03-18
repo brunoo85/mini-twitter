@@ -1,9 +1,9 @@
 export interface Post {
-  id: string;
+  id: number;
   title: string;
   content: string;
   image?: URL;
-  authorId: string;
+  authorId: number;
   authorName: string;
   createdAt: Date;
   likesCount: number;
@@ -18,6 +18,7 @@ export interface PostsResponse {
 }
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
+  email: string;
 }
