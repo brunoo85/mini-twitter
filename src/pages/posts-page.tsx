@@ -10,17 +10,21 @@ import { authService } from "@/services/auth.service";
 import { Loader2, MessageSquare } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export function PostsPage() {
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("token-user");
-  const { currentUser } = useAuth();
-  const logOut = async () => {
+  const { currentUser, logout } = useAuth();
+
+  const handleLogOut = async () => {
     try {
       await authService.logout();
+      logout();
       navigate("/login");
     } catch (error) {
       console.error(error);
+      toast.error("Erro ao tentar fazer logout. Tente novamente.");
     }
   };
   const { data: posts, isLoading } = useGetPosts();
@@ -88,7 +92,7 @@ export function PostsPage() {
               </p>
             </div>
             {isLoggedIn ? (
-              <Button onClick={logOut}>Logout</Button>
+              <Button onClick={handleLogOut}>Logout</Button>
             ) : (
               <Button onClick={() => navigate("/login")}>Login</Button>
             )}
