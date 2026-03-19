@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Field, FieldLabel } from "@/components/ui/field";
 import type { Post } from "@/lib/types";
-import { usePosts } from "@/context/postContext";
+import { useUpdatePost } from "@/hooks/mutation/posts/useUpdatePost";
 
 interface EditPostDialogProps {
   post: Post;
@@ -25,10 +25,11 @@ export function EditPostDialog({
   open,
   onOpenChange,
 }: EditPostDialogProps) {
-  const { updatePost } = usePosts();
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
   const [imageUrl, setImageUrl] = useState(post.image || "");
+
+  const { mutateAsync: updatePost } = useUpdatePost();
 
   useEffect(() => {
     if (open) {
@@ -44,15 +45,18 @@ export function EditPostDialog({
     if (!title.trim() || !content.trim()) return;
 
     const trimmedImageUrl = String(imageUrl).trim();
-    updatePost(post.id, {
-      title: title.trim(),
-      content: content.trim(),
-      image: trimmedImageUrl ? new URL(trimmedImageUrl) : undefined,
+    updatePost({
+      id: post.id,
+      data: {
+        title: title.trim(),
+        content: content.trim(),
+        image: trimmedImageUrl ? new URL(trimmedImageUrl) : undefined,
+      },
     });
     onOpenChange(false);
   };
 
-  const isValid = title.trim().length > 0 && content.trim().length > 0;
+  // const isValid = title.trim().length > 0 && content.trim().length > 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -136,7 +140,7 @@ export function EditPostDialog({
             >
               Cancelar
             </Button>
-            <Button type="submit" disabled={!isValid}>
+            <Button type="submit">
               <ImagePlus className="mr-2 h-4 w-4" />
               Salvar alterações
             </Button>

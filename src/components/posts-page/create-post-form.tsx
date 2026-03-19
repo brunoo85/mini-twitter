@@ -10,20 +10,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { usePosts } from "@/context/postContext";
 import { useCreatePost } from "@/hooks/mutation/posts/useCreatePost";
+import { useAuth } from "@/context/authContext";
 
 export function CreatePostForm() {
-  const { currentUser } = usePosts();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [showImageInput, setShowImageInput] = useState(false);
 
   const { mutate: createPost } = useCreatePost();
+  const { currentUser } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
-    console.log("deu certo");
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 

@@ -7,6 +7,8 @@ import { FooterFormAuth } from "./footer-form-auth";
 import { useCreateUser } from "@/hooks/mutation/auth/useCreateUser";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { authService } from "@/services/auth.service";
+import { useAuth } from "@/context/authContext";
 
 interface IRegisterTabProps {
   showPasswordRegister: boolean;
@@ -37,12 +39,15 @@ export function RegisterTab({
   } = useForm<RegisterForm>({ resolver: zodResolver(registerSchema) });
 
   const navigate = useNavigate();
-
+  const { setCurrentUser } = useAuth();
   const { mutateAsync: registerUser } = useCreateUser();
 
   const onSubmit = async (data: RegisterForm) => {
     try {
       await registerUser(data);
+      const response = await authService.login(data);
+      localStorage.setItem("token-user", response.data.token);
+      setCurrentUser(response.data.user);
       navigate("/");
     } catch (error: any) {
       if (error.response?.status === 400) {

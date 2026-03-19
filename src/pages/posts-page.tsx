@@ -4,6 +4,7 @@ import { PostCard } from "@/components/posts-page/post-card";
 import { SearchBar } from "@/components/posts-page/search-bar";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/authContext";
 import { useGetPosts } from "@/hooks/query/posts/useGetPosts";
 import { authService } from "@/services/auth.service";
 import { Loader2, MessageSquare } from "lucide-react";
@@ -13,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 export function PostsPage() {
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("token-user");
-
+  const { currentUser } = useAuth();
   const logOut = async () => {
     try {
       await authService.logout();
@@ -23,7 +24,6 @@ export function PostsPage() {
     }
   };
   const { data: posts, isLoading } = useGetPosts();
-  console.log({ posts, isArray: Array.isArray(posts), type: typeof posts });
   const [searchQuery, setSearchQuery] = useState("");
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -74,14 +74,15 @@ export function PostsPage() {
       }
     };
   }, [handleLoadMore]);
-
   return (
     <>
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-2xl px-4 py-8">
           <header className="mb-8 flex justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">Feed</h1>
+              <h1 className="text-3xl font-bold text-foreground mb-2">
+                {currentUser ? `Olá ${currentUser.name}` : "Feed"}
+              </h1>
               <p className="text-muted-foreground">
                 Compartilhe suas ideias e conecte-se com outros usuários
               </p>

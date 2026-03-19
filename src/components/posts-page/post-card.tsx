@@ -26,11 +26,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { Post } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { usePosts } from "@/context/postContext";
 import { EditPostDialog } from "./edit-post-dialog";
 import { useModal } from "@/hooks/use-auth-modal";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useAuth } from "@/context/authContext";
+import { useToogleLike } from "@/hooks/mutation/posts/useToogleLike";
+import { useDeletePost } from "@/hooks/mutation/posts/useDeletePost";
 
 interface PostCardProps {
   post: Post;
@@ -38,7 +40,10 @@ interface PostCardProps {
 }
 
 export function PostCard({ post, canInteract }: PostCardProps) {
-  const { currentUser, toggleLike, deletePost } = usePosts();
+  const { currentUser } = useAuth();
+  const { mutateAsync: toggleLike } = useToogleLike();
+  const { mutateAsync: deletePost } = useDeletePost();
+
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
