@@ -1,11 +1,12 @@
-import type { User } from "@/lib/types";
+import type { Post, User } from "@/lib/types";
 import { create } from "zustand";
 
-export type ModalType = "auth" | "deletePost" | "editProfile";
+export type ModalType = "auth" | "deletePost" | "editPost";
 
 interface ModalData {
   postId?: string;
   user?: User;
+  post?: Post;
 }
 
 interface ModalStore {

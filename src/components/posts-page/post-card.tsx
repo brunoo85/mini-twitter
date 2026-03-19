@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { Post } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { EditPostDialog } from "./edit-post-dialog";
 import { useModal } from "@/hooks/use-auth-modal";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -45,7 +44,6 @@ export function PostCard({ post, canInteract }: PostCardProps) {
   const { mutateAsync: deletePost } = useDeletePost();
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [showEditDialog, setShowEditDialog] = useState(false);
 
   const isAuthor = post.authorId === currentUser?.id;
   const { onOpen } = useModal();
@@ -91,7 +89,9 @@ export function PostCard({ post, canInteract }: PostCardProps) {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setShowEditDialog(true)}>
+                    <DropdownMenuItem
+                      onClick={() => onOpen("editPost", { post })}
+                    >
                       <Pencil className="mr-2 h-4 w-4" />
                       Editar
                     </DropdownMenuItem>
@@ -167,11 +167,11 @@ export function PostCard({ post, canInteract }: PostCardProps) {
         </AlertDialogContent>
       </AlertDialog>
 
-      <EditPostDialog
+      {/* <EditPostDialog
         post={post}
         open={showEditDialog}
         onOpenChange={setShowEditDialog}
-      />
+      /> */}
     </>
   );
 }

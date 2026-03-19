@@ -11,34 +11,40 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Field, FieldLabel } from "@/components/ui/field";
-import type { Post } from "@/lib/types";
 import { useUpdatePost } from "@/hooks/mutation/posts/useUpdatePost";
+import { useModal } from "@/hooks/use-auth-modal";
 
-interface EditPostDialogProps {
-  post: Post;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
+export function EditPostModal() {
+  const { isOpen, onClose, type, data } = useModal();
 
-export function EditPostDialog({
-  post,
-  open,
-  onOpenChange,
-}: EditPostDialogProps) {
-  const [title, setTitle] = useState(post.title);
-  const [content, setContent] = useState(post.content);
-  const [imageUrl, setImageUrl] = useState(post.image || "");
+  const isModalOpen = isOpen && type === "editPost";
+
+  const post = data?.post;
+
+  const [title, setTitle] = useState(post?.title || "");
+  const [content, setContent] = useState(post?.content || "");
+  const [imageUrl, setImageUrl] = useState(post?.image || "");
 
   const { mutateAsync: updatePost } = useUpdatePost();
 
   useEffect(() => {
-    if (open) {
+    if (post) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTitle(post.title);
       setContent(post.content);
       setImageUrl(post.image || "");
     }
-  }, [open, post]);
+  }, [post]);
+
+  if (!post) return null;
+
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     setTitle(post.title);
+  //     setContent(post.content);
+  //     setImageUrl(post.image || "");
+  //   }
+  // }, [isOpen, post]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,13 +59,13 @@ export function EditPostDialog({
         image: trimmedImageUrl ? new URL(trimmedImageUrl) : undefined,
       },
     });
-    onOpenChange(false);
+    onClose();
   };
 
   // const isValid = title.trim().length > 0 && content.trim().length > 0;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Editar post</DialogTitle>
@@ -133,11 +139,7 @@ export function EditPostDialog({
           )}
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
+            <Button type="button" variant="outline" onClick={onClose}>
               Cancelar
             </Button>
             <Button type="submit">
