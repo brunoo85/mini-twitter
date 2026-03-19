@@ -13,9 +13,18 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export function PostsPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetPosts({
+    search: debouncedSearch,
+  });
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem("token-user");
   const { currentUser, logout } = useAuth();
+
+  const isLoggedIn = !!localStorage.getItem("token-user");
+  const posts = useMemo(() => data?.allPosts ?? [], [data]);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const handleLogOut = async () => {
     try {
@@ -27,57 +36,40 @@ export function PostsPage() {
       toast.error("Erro ao tentar fazer logout. Tente novamente.");
     }
   };
-  const { data: posts, isLoading } = useGetPosts();
-  const [searchQuery, setSearchQuery] = useState("");
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-
-  const filteredPosts = useMemo(() => {
-    const basePosts = Array.isArray(posts?.posts) ? posts.posts : [];
-    if (!searchQuery.trim()) return basePosts;
-    const query = searchQuery.toLowerCase().trim();
-
-    return basePosts.filter(
-      (post) =>
-        post?.title?.toLowerCase()?.includes(query) ||
-        post?.content?.toLowerCase()?.includes(query),
-    );
-  }, [posts, searchQuery]);
-
-  const handleLoadMore = useCallback(() => {
-    if (isLoading || searchQuery.trim()) return;
-
-    // setIsLoading(true);
-    setTimeout(() => {
-      // loadMorePosts();
-      // setIsLoading(false);
-    }, 500);
-  }, [isLoading, searchQuery]);
 
   useEffect(() => {
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
 
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          handleLoadMore();
-        }
-      },
-      { threshold: 0.1 },
-    );
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
-    if (loadMoreRef.current) {
-      observerRef.current.observe(loadMoreRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
       }
-    };
-  }, [handleLoadMore]);
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage],
+  );
+
+  useEffect(() => {
+    const element = loadMoreRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.1,
+    });
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [handleObserver]);
+
   return (
     <>
       <div className="min-h-screen bg-background">
@@ -109,14 +101,14 @@ export function PostsPage() {
 
             {searchQuery && (
               <p className="text-sm text-muted-foreground">
-                {filteredPosts?.length === 0
+                {posts?.length === 0
                   ? "Nenhum resultado encontrado"
-                  : `${filteredPosts.length} ${filteredPosts.length === 1 ? "resultado" : "resultados"} para "${searchQuery}"`}
+                  : `${posts.length} ${posts.length === 1 ? "resultado" : "resultados"} para "${searchQuery}"`}
               </p>
             )}
 
             <div className="space-y-4">
-              {filteredPosts?.length === 0 ? (
+              {posts?.length === 0 ? (
                 <CustomEmpty
                   icon={<MessageSquare className="h-12 w-12" />}
                   title={
@@ -129,7 +121,7 @@ export function PostsPage() {
                   }
                 />
               ) : (
-                filteredPosts?.map((post) => (
+                posts?.map((post) => (
                   <PostCard
                     key={post.id}
                     post={post}
@@ -141,7 +133,7 @@ export function PostsPage() {
 
             {!searchQuery.trim() && (
               <div ref={loadMoreRef} className="flex justify-center py-8">
-                {isLoading && (
+                {isFetchingNextPage && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Loader2 className="h-5 w-5 animate-spin" />
                     <span>Carregando mais posts...</span>
@@ -150,11 +142,13 @@ export function PostsPage() {
               </div>
             )}
 
-            {!searchQuery.trim() && (posts?.posts?.length ?? 0) > 0 && (
-              <p className="text-center text-muted-foreground py-8">
-                Você chegou ao fim do feed!
-              </p>
-            )}
+            {!searchQuery.trim() &&
+              !hasNextPage &&
+              (posts?.length ?? 0) > 0 && (
+                <p className="text-center text-muted-foreground py-8">
+                  Você chegou ao fim do feed!
+                </p>
+              )}
           </div>
         </div>
       </div>
