@@ -4,7 +4,7 @@ import { PostCard } from "@/components/posts-page/post-card";
 import { SearchBar } from "@/components/posts-page/search-bar";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { usePosts } from "@/context/postContext";
+import { useGetPosts } from "@/hooks/query/posts/useGetPosts";
 import { authService } from "@/services/auth.service";
 import { Loader2, MessageSquare } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -22,11 +22,9 @@ export function PostsPage() {
       console.error(error);
     }
   };
-
-  const { posts, loadMorePosts, hasMore } = usePosts();
+  const { data: posts, isLoading } = useGetPosts();
   console.log({ posts, isArray: Array.isArray(posts), type: typeof posts });
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -43,14 +41,14 @@ export function PostsPage() {
   }, [posts, searchQuery]);
 
   const handleLoadMore = useCallback(() => {
-    if (isLoading || !hasMore || searchQuery.trim()) return;
+    if (isLoading || searchQuery.trim()) return;
 
-    setIsLoading(true);
+    // setIsLoading(true);
     setTimeout(() => {
-      loadMorePosts();
-      setIsLoading(false);
+      // loadMorePosts();
+      // setIsLoading(false);
     }, 500);
-  }, [isLoading, hasMore, searchQuery, loadMorePosts]);
+  }, [isLoading, searchQuery]);
 
   useEffect(() => {
     if (observerRef.current) {
@@ -136,7 +134,7 @@ export function PostsPage() {
               )}
             </div>
 
-            {!searchQuery.trim() && hasMore && (
+            {!searchQuery.trim() && (
               <div ref={loadMoreRef} className="flex justify-center py-8">
                 {isLoading && (
                   <div className="flex items-center gap-2 text-muted-foreground">
@@ -147,13 +145,11 @@ export function PostsPage() {
               </div>
             )}
 
-            {!searchQuery.trim() &&
-              !hasMore &&
-              (posts?.posts?.length ?? 0) > 0 && (
-                <p className="text-center text-muted-foreground py-8">
-                  Você chegou ao fim do feed!
-                </p>
-              )}
+            {!searchQuery.trim() && (posts?.posts?.length ?? 0) > 0 && (
+              <p className="text-center text-muted-foreground py-8">
+                Você chegou ao fim do feed!
+              </p>
+            )}
           </div>
         </div>
       </div>

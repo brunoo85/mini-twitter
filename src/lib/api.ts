@@ -16,7 +16,7 @@ api.interceptors.response.use(
     const isLoginRoute = error.config?.url?.includes("/auth/login");
 
     if (error.response?.status === 401 && !isLoginRoute) {
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("token-user");
       window.location.href = "/";
     }
     return Promise.reject(error);
