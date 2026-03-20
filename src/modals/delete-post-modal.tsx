@@ -39,7 +39,7 @@ export function DeletePostModal() {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button>Cancelar</Button>
+          <Button onClick={() => onClose()}>Cancelar</Button>
           <Button
             onClick={handleDelete}
             className="bg-destructive text-card hover:bg-destructive/90"

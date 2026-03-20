@@ -121,7 +121,6 @@ export function PostsPage() {
                     key={post.id}
                     post={post}
                     canInteract={isLoggedIn}
-                    isAuthor={post.authorId === "currentUser"}
                   />
                 ))
               )}

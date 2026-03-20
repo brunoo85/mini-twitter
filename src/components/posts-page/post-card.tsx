@@ -18,7 +18,6 @@ import { useToogleLike } from "@/hooks/mutation/posts/useToogleLike";
 interface PostCardProps {
   post: Post;
   canInteract: boolean;
-  isAuthor: boolean;
 }
 
 export function PostCard({ post, canInteract }: PostCardProps) {
