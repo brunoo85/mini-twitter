@@ -20,7 +20,7 @@ export function PostsPage() {
     search: debouncedSearch,
   });
   const navigate = useNavigate();
-  const { currentUser, logout } = useAuth();
+  const { logout } = useAuth();
 
   const isLoggedIn = !!localStorage.getItem("token-user");
   const posts = useMemo(() => data?.allPosts ?? [], [data]);
@@ -73,30 +73,26 @@ export function PostsPage() {
   return (
     <>
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-2xl px-4 py-8">
-          <header className="mb-8 flex justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">
-                {currentUser ? `Olá ${currentUser.name}` : "Feed"}
-              </h1>
-              <p className="text-muted-foreground">
-                Compartilhe suas ideias e conecte-se com outros usuários
-              </p>
+        <header className="sticky top-0 z-50 border-b border-border bg-card">
+          <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-4">
+            <h1 className="text-xl font-bold text-primary">Mini Twitter</h1>
+
+            <div className="mx-8 max-w-md flex-1">
+              <SearchBar value={searchQuery} onChange={setSearchQuery} />
             </div>
+
             {isLoggedIn ? (
               <Button onClick={handleLogOut}>Logout</Button>
             ) : (
               <Button onClick={() => navigate("/login")}>Login</Button>
             )}
-
-            <ThemeToggle />
-          </header>
-
-          <div className="space-y-6">
-            <div className="pt-4">
-              <SearchBar value={searchQuery} onChange={setSearchQuery} />
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
             </div>
-
+          </div>
+        </header>
+        <main className="mx-auto max-w-2xl px-4 py-6">
+          <div className="space-y-4">
             {isLoggedIn && <CreatePostForm />}
 
             {searchQuery && (
@@ -126,6 +122,7 @@ export function PostsPage() {
                     key={post.id}
                     post={post}
                     canInteract={isLoggedIn}
+                    isAuthor={post.authorId === "currentUser"}
                   />
                 ))
               )}
@@ -150,7 +147,13 @@ export function PostsPage() {
                 </p>
               )}
           </div>
-        </div>
+        </main>
+
+        <footer className="border-t border-border bg-card py-4">
+          <div className="mx-auto max-w-4xl px-4">
+            <p className="text-sm font-semibold text-primary">Mini Twitter</p>
+          </div>
+        </footer>
       </div>
     </>
   );

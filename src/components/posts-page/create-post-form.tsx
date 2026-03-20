@@ -8,7 +8,6 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { Field, FieldError, FieldGroup } from "../ui/field";
-import { Textarea } from "../ui/textarea";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -147,21 +146,6 @@ export function CreatePostForm() {
     <Card className="overflow-hidden border-border shadow-sm">
       <form id="create-post-form" onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup className="space-y-3 p-4">
-          {/* <Controller
-            name="content"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Textarea
-                {...field}
-                // id="post-content"
-                placeholder="E ai, o que esta rolando?"
-                // rows={4}
-                className="min-h-16 resize-none border-0 bg-transparent p-0 text-base placeholder:text-muted-foreground focus-visible:ring-0"
-                aria-invalid={fieldState.invalid}
-                // maxLength={500}
-              />
-            )}
-          /> */}
           <div className="relative">
             {!editor?.getText() && (
               <span className="absolute pointer-events-none text-muted-foreground opacity-50">
