@@ -21,7 +21,7 @@ export function AuthForm() {
             value="cadastrar"
             className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:bg-transparent data-[state=active]:text-primary bg-transparent text-muted-foreground pb-3 pt-2 font-medium data-[state=active]:shadow-none!"
           >
-            Cadastra
+            Cadastrar
           </TabsTrigger>
         </TabsList>
 
