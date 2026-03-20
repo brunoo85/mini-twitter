@@ -38,14 +38,6 @@ export function EditPostModal() {
 
   if (!post) return null;
 
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     setTitle(post.title);
-  //     setContent(post.content);
-  //     setImageUrl(post.image || "");
-  //   }
-  // }, [isOpen, post]);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
@@ -61,8 +53,6 @@ export function EditPostModal() {
     });
     onClose();
   };
-
-  // const isValid = title.trim().length > 0 && content.trim().length > 0;
 
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>

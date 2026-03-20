@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Heart, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -8,16 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import type { Post } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useModal } from "@/hooks/use-auth-modal";
@@ -25,7 +14,6 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useAuth } from "@/context/authContext";
 import { useToogleLike } from "@/hooks/mutation/posts/useToogleLike";
-import { useDeletePost } from "@/hooks/mutation/posts/useDeletePost";
 
 interface PostCardProps {
   post: Post;
@@ -36,10 +24,6 @@ interface PostCardProps {
 export function PostCard({ post, canInteract }: PostCardProps) {
   const { currentUser } = useAuth();
   const { mutateAsync: toggleLike } = useToogleLike();
-  const { mutateAsync: deletePost } = useDeletePost();
-
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-
   const isAuthor = post.authorId === currentUser?.id;
   const { onOpen } = useModal();
 
@@ -47,7 +31,6 @@ export function PostCard({ post, canInteract }: PostCardProps) {
     if (canInteract) {
       toggleLike(post.id);
     } else {
-      console.log("onClick apertado");
       onOpen("auth");
     }
   };
@@ -89,10 +72,14 @@ export function PostCard({ post, canInteract }: PostCardProps) {
                     Editar
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => setShowDeleteDialog(true)}
-                    className="text-destructive focus:text-destructive"
+                    onClick={() => onOpen("deletePost", { post })}
+                    variant="destructive"
+                    className="text-destructive! focus:bg-destructive/10! focus:text-destructive!"
                   >
-                    <Trash2 className="mr-2 h-4 w-4" />
+                    <Trash2
+                      className="mr-2 h-4 w-4 transition-colors"
+                      // strokeWidth={1}
+                    />
                     Excluir
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -133,34 +120,10 @@ export function PostCard({ post, canInteract }: PostCardProps) {
                 strokeWidth={1}
                 size={50}
               />
-              {/* {post.likesCount > 0 && (
-                <span className="text-sm font-medium">{post.likesCount}</span>
-              )} */}
             </Button>
           </CardContent>
         </div>
       </Card>
-
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Excluir post</AlertDialogTitle>
-            <AlertDialogDescription>
-              Tem certeza que deseja excluir este post? Esta ação não pode ser
-              desfeita.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deletePost(post.id)}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Excluir
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   );
 }

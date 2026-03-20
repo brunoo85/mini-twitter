@@ -21,7 +21,6 @@ export function PostsPage() {
   });
   const navigate = useNavigate();
   const { logout } = useAuth();
-
   const isLoggedIn = !!localStorage.getItem("token-user");
   const posts = useMemo(() => data?.allPosts ?? [], [data]);
   const loadMoreRef = useRef<HTMLDivElement>(null);
