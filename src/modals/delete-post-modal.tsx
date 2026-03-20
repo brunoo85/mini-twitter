@@ -18,6 +18,16 @@ export function DeletePostModal() {
   const { mutateAsync: deletePost } = useDeletePost();
   const post = data?.post;
   if (!post) return null;
+
+  const handleDelete = async () => {
+    try {
+      await deletePost(post.id);
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent>
@@ -31,7 +41,7 @@ export function DeletePostModal() {
         <DialogFooter>
           <Button>Cancelar</Button>
           <Button
-            onClick={() => deletePost(post.id)}
+            onClick={handleDelete}
             className="bg-destructive text-card hover:bg-destructive/90"
           >
             Excluir

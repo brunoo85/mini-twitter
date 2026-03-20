@@ -76,10 +76,7 @@ export function PostCard({ post, canInteract }: PostCardProps) {
                     variant="destructive"
                     className="text-destructive! focus:bg-destructive/10! focus:text-destructive!"
                   >
-                    <Trash2
-                      className="mr-2 h-4 w-4 transition-colors"
-                      // strokeWidth={1}
-                    />
+                    <Trash2 className="mr-2 h-4 w-4 transition-colors" />
                     Excluir
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -109,7 +106,7 @@ export function PostCard({ post, canInteract }: PostCardProps) {
               onClick={handleLike}
               className={cn(
                 "p-0 rounded-full  transition-colors hover:bg-like/10",
-                post.likedByUser && "text-like hover:text-like/80",
+                post.likesCount > 0 && "text-like hover:text-like/80",
               )}
             >
               <Heart

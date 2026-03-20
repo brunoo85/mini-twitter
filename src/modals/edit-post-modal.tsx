@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, type SubmitEvent } from "react";
 import { ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,31 +27,26 @@ export function EditPostModal() {
 
   const { mutateAsync: updatePost } = useUpdatePost();
 
-  useEffect(() => {
-    if (post) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTitle(post.title);
-      setContent(post.content);
-      setImageUrl(post.image || "");
-    }
-  }, [post]);
-
   if (!post) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 
     const trimmedImageUrl = String(imageUrl).trim();
-    updatePost({
-      id: post.id,
-      data: {
-        title: title.trim(),
-        content: content.trim(),
-        image: trimmedImageUrl ? new URL(trimmedImageUrl) : undefined,
-      },
-    });
-    onClose();
+    try {
+      await updatePost({
+        id: post.id,
+        data: {
+          title: title.trim(),
+          content: content.trim(),
+          image: trimmedImageUrl ? new URL(trimmedImageUrl) : undefined,
+        },
+      });
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

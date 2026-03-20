@@ -7,7 +7,6 @@ export interface Post {
   authorName: string;
   createdAt: Date;
   likesCount: number;
-  likedByUser: boolean;
 }
 
 export interface PostsResponse {
