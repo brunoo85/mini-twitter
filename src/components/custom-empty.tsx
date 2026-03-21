@@ -8,7 +8,7 @@ import {
 } from "./ui/empty";
 
 interface CustomEmptyProps {
-  icon: ReactNode; // Permite passar o componente <MessageSquare />
+  icon: ReactNode;
   title: string;
   description: string;
 }

@@ -92,7 +92,6 @@ export function useImageUpload({
     setImageError(null);
   };
 
-  /** Resolves the final value to send to the API — always string | undefined */
   const resolvedImage: string | undefined = (() => {
     if (!imageValue) return undefined;
     if (imageValue.startsWith("data:image")) return imageValue;

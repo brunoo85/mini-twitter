@@ -80,16 +80,6 @@ export function PostsPage() {
               <SearchBar value={searchQuery} onChange={setSearchQuery} />
             </div>
 
-            {/* {isLoggedIn ? (
-              <Button
-                onClick={handleLogOut}
-                className="rotate-180 rounded-full w-9.25 h-9.25 hover:opacity-80"
-              >
-                <LogOut />{" "}
-              </Button>
-            ) : (
-              <Button onClick={() => navigate("/login")}>Login</Button>
-            )} */}
             {isLoggedIn ? (
               <Button
                 onClick={handleLogOut}

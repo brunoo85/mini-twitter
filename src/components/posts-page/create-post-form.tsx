@@ -11,6 +11,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { BlueButton } from "../blue-button";
 import { useImageUpload } from "@/hooks/mutation/posts/useImageUploaud";
 import { ImageUploadField } from "./image-upload-field";
+import { getPostPayloadFromText } from "./create-post.utils";
 
 const createPostSchema = z.object({
   rawText: z.string().min(5, "O post está muito curto"),
@@ -44,10 +45,7 @@ export function CreatePostForm() {
 
   const onSubmit = () => {
     const fullText = editor?.getText() || "";
-    const lines = fullText.split("\n").filter((line) => line.trim() !== "");
-
-    const title = lines[0].trim() || "Sem título";
-    const content = lines.slice(1).join("\n").trim() || title;
+    const { title, content } = getPostPayloadFromText(fullText);
 
     createPost({
       title,
