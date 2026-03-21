@@ -1,7 +1,12 @@
 import { AuthForm } from "@/components/auth-form/auth-form";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useSearchParams } from "react-router-dom";
 
 export function AuthPage() {
+  const [searchParams] = useSearchParams();
+  const defaultTab =
+    searchParams.get("tab") === "cadastrar" ? "cadastrar" : "login";
+
   return (
     <main className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <div className="absolute top-4 right-4">
@@ -16,7 +21,7 @@ export function AuthPage() {
           Mini Twitter
         </h1>
 
-        <AuthForm />
+        <AuthForm defaultTab={defaultTab} />
       </div>
     </main>
   );

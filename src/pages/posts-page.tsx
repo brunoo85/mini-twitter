@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/authContext";
 import { useGetPosts } from "@/hooks/query/posts/useGetPosts";
 import { authService } from "@/services/auth.service";
-import { Loader2, MessageSquare } from "lucide-react";
+import { Loader2, LogOut, MessageSquare } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -80,10 +80,35 @@ export function PostsPage() {
               <SearchBar value={searchQuery} onChange={setSearchQuery} />
             </div>
 
-            {isLoggedIn ? (
-              <Button onClick={handleLogOut}>Logout</Button>
+            {/* {isLoggedIn ? (
+              <Button
+                onClick={handleLogOut}
+                className="rotate-180 rounded-full w-9.25 h-9.25 hover:opacity-80"
+              >
+                <LogOut />{" "}
+              </Button>
             ) : (
               <Button onClick={() => navigate("/login")}>Login</Button>
+            )} */}
+            {isLoggedIn ? (
+              <Button
+                onClick={handleLogOut}
+                className="rotate-180 rounded-full w-9.25 h-9.25 hover:opacity-80"
+              >
+                <LogOut />{" "}
+              </Button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate("/login?tab=login")}
+                >
+                  Login
+                </Button>
+                <Button onClick={() => navigate("/login?tab=cadastrar")}>
+                  Cadastrar
+                </Button>
+              </div>
             )}
             <div className="flex items-center gap-2">
               <ThemeToggle />

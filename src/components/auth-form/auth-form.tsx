@@ -3,13 +3,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { LoginTab } from "./login-tab";
 import { RegisterTab } from "./register-tab";
 
-export function AuthForm() {
+export function AuthForm({ defaultTab = "login" }: { defaultTab?: string }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordRegister, setShowPasswordRegister] = useState(false);
 
   return (
     <div className="w-full max-w-md mx-auto h-120">
-      <Tabs defaultValue="login" className="w-full h-full">
+      <Tabs defaultValue={defaultTab} className="w-full h-full">
         <TabsList className="w-full bg-transparent p-0 h-auto rounded-none border-b border-border">
           <TabsTrigger
             value="login"

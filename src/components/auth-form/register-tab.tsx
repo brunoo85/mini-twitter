@@ -1,5 +1,4 @@
 import { Eye, EyeOff, Mail, User } from "lucide-react";
-import { Button } from "../ui/button";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { authService } from "@/services/auth.service";
 import { useAuth } from "@/context/authContext";
+import { BlueButton } from "../blue-button";
 
 interface IRegisterTabProps {
   showPasswordRegister: boolean;
@@ -49,6 +49,7 @@ export function RegisterTab({
       localStorage.setItem("token-user", response.data.token);
       setCurrentUser(response.data.user);
       navigate("/");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response?.status === 400) {
         const backendMessage = error.response.data.message;
@@ -145,12 +146,7 @@ export function RegisterTab({
           )}
         </div>
 
-        <Button
-          type="submit"
-          className="w-full h-12 rounded-full border-none bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base mt-6 shadow-lg shadow-primary/20"
-        >
-          Continuar
-        </Button>
+        <BlueButton type="submit">Continuar</BlueButton>
       </form>
 
       <FooterFormAuth />

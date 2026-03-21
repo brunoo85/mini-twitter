@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 interface CreatePostDto {
   title: string;
   content: string;
-  image?: string;
+  image?: string | URL;
 }
 
 export function useCreatePost() {

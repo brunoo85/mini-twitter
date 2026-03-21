@@ -110,7 +110,7 @@ export function PostCard({ post, canInteract }: PostCardProps) {
             >
               <Heart
                 className={cn(
-                  "h-5 w-5 transition-all",
+                  "h-5 w-5 transition-all stroke-red-500",
                   post.likesCount > 0 && "fill-red-500 scale-110",
                 )}
                 strokeWidth={1}

@@ -1,5 +1,4 @@
 import { Eye, EyeOff, Mail } from "lucide-react";
-import { Button } from "../ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "@/services/auth.service";
 import { toast } from "sonner";
 import { useAuth } from "@/context/authContext";
+import { BlueButton } from "../blue-button";
 
 interface ILoginTabProps {
   showPassword: boolean;
@@ -108,12 +108,7 @@ export function LoginTab({ showPassword, setShowPassword }: ILoginTabProps) {
           )}
         </div>
 
-        <Button
-          type="submit"
-          className="w-full h-12 rounded-full border-none bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base mt-6 shadow-lg shadow-primary/20"
-        >
-          Continuar
-        </Button>
+        <BlueButton type="submit">Continuar</BlueButton>
       </form>
 
       <FooterFormAuth />
