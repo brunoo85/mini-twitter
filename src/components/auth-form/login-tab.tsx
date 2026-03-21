@@ -30,7 +30,6 @@ export function LoginTab({ showPassword, setShowPassword }: ILoginTabProps) {
   const {
     register,
     handleSubmit,
-    // setError,
     formState: { errors },
   } = useForm<LoginForm>({ resolver: zodResolver(loginSchema) });
 

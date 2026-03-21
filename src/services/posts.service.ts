@@ -1,4 +1,3 @@
-// src/services/posts.service.ts
 import { api } from "../lib/api";
 
 export const postsService = {

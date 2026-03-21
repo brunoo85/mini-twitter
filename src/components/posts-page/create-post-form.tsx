@@ -174,7 +174,6 @@ export function CreatePostForm() {
                       ) : (
                         <Input
                           {...field}
-                          // id="post-image"
                           value={field.value || ""}
                           onChange={field.onChange}
                           placeholder="Cole a URL da imagem ou faça upload"
