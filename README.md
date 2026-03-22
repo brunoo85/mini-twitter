@@ -1,73 +1,149 @@
-# React + TypeScript + Vite
+# 🐦 Mini Twitter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Uma aplicação web inspirada no Twitter, construída com **React 19**, **TypeScript** e **Vite**, com **testes unitários** e **testes E2E**, proposto como teste técnico para vaga de Desenvolvedor Front-end na B2bit.
 
-Currently, two official plugins are available:
+A aplicação permite que usuários criem contas, publiquem posts, curtam publicações e naveguem por um feed com scroll infinito.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📸 Visão Geral
 
-## React Compiler
+O Mini Twitter consome uma API REST externa. As principais funcionalidades incluem:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Autenticação** — Cadastro, login e logout de usuários com JWT
+- **Timeline de posts** — Feed público com scroll infinito
+- **Criar post** — Usuários autenticados podem publicar novos posts
+- **Editar e excluir posts** — Gerenciamento dos próprios posts via modais
+- **Curtir posts** — Interação com publicações de outros usuários
+- **Busca** — Pesquisa de posts com debounce em tempo real
+- **Tema claro/escuro** — Alternância de tema na interface
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Tecnologias
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Categoria          | Tecnologia                                                  |
+| ------------------ | ----------------------------------------------------------- |
+| **Framework**      | [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) |
+| **Bundler**        | [Vite 7](https://vite.dev/)                                |
+| **Estilização**    | [Tailwind CSS v4](https://tailwindcss.com/) + [Shadcn UI](https://ui.shadcn.com/) |
+| **Roteamento**     | [React Router DOM v7](https://reactrouter.com/)            |
+| **Estado servidor**| [TanStack React Query v5](https://tanstack.com/query)      |
+| **Estado global**  | [Zustand](https://zustand.docs.pmnd.rs/)                   |
+| **HTTP Client**    | [Axios](https://axios-http.com/)                           |
+| **Validação**      | [Zod](https://zod.dev/) + [React Hook Form](https://react-hook-form.com/) |
+| **Notificações**   | [Sonner](https://sonner.emilkowal.dev/)                    |
+| **Ícones**         | [Lucide React](https://lucide.dev/)                        |
+| **Testes unitários** | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) |
+| **Testes E2E**     | [Playwright](https://playwright.dev/)                      |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+
+
+## ⚙️ Pré-requisitos
+
+Antes de começar, certifique-se de ter instalado:
+
+- [Node.js](https://nodejs.org/) **v18 ou superior**
+- [npm](https://www.npmjs.com/) (já vem com o Node.js)
+- A **API back-end** rodando localmente (por padrão em `http://localhost:3000`)
+
+## 🚀 Primeiras Configurações
+
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/seu-usuario/mini-twitter.git
+cd mini-twitter
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Instalar as dependências
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+### 3. Configurar variáveis de ambiente
+
+Crie (ou edite) o arquivo `.env` na raiz do projeto com a URL da API:
+
+```env
+VITE_BASE_URL=http://localhost:3000
+```
+
+> Se a variável `VITE_BASE_URL` não for definida, a aplicação usará `http://localhost:3000` como padrão.
+
+### 4. Rodar a aplicação em modo de desenvolvimento
+
+```bash
+npm run dev
+```
+
+A aplicação estará disponível em **http://localhost:5173** (porta padrão do Vite).
+
+
+## 🧪 Testes
+
+### Testes unitários (Vitest)
+
+```bash
+# Executar uma vez
+npm run test
+
+# Executar em modo watch
+npm run test:watch
+
+# Executar com cobertura de código
+npm run test:coverage
+```
+
+### Testes E2E (Playwright)
+
+```bash
+# Executar testes E2E (headless)
+npm run e2e
+
+# Executar testes E2E com navegador visível
+npm run e2e:headed
+```
+
+> Para rodar os testes E2E, é necessário que tanto a **API back-end** quanto o **front-end** estejam em execução.
+
+---
+
+## 📜 Scripts Disponíveis
+
+| Comando              | Descrição                                    |
+| -------------------- | -------------------------------------------- |
+| `npm run dev`        | Inicia o servidor de desenvolvimento         |
+| `npm run build`      | Gera o build de produção                     |
+| `npm run preview`    | Visualiza o build de produção localmente     |
+| `npm run lint`       | Executa o ESLint no projeto                  |
+| `npm run test`       | Executa os testes unitários                  |
+| `npm run test:watch` | Executa os testes em modo watch              |
+| `npm run test:coverage` | Executa os testes com relatório de cobertura |
+| `npm run e2e`        | Executa os testes E2E (headless)             |
+| `npm run e2e:headed` | Executa os testes E2E com navegador visível  |
+
+---
+
+## 🗂️ Rotas da Aplicação
+
+| Rota     | Página                          | Acesso     |
+| -------- | ------------------------------- | ---------- |
+| `/`      | Timeline de posts               | Público    |
+| `/login` | Login e Cadastro de usuário     | Público    |
+
+---
+
+## 🔑 Autenticação
+
+A autenticação é baseada em **JWT (JSON Web Token)**:
+
+1. O usuário faz login ou cadastro pela página `/login`
+2. O token JWT é armazenado no `localStorage` (`token-user`)
+3. Todas as requisições autenticadas enviam o token via header `Authorization: Bearer <token>`
+4. Em caso de resposta `401 Unauthorized`, o token é removido e o usuário é redirecionado para a timeline
+
+
+
+## 📄 Licença
+
+Este projeto é de uso pessoal/educacional. Sinta-se à vontade para clonar e modificar.

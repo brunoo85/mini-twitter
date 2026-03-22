@@ -29,7 +29,6 @@ export function PostsPage() {
     try {
       await authService.logout();
       logout();
-      navigate("/login");
     } catch (error) {
       console.error(error);
       toast.error("Erro ao tentar fazer logout. Tente novamente.");
