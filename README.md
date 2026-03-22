@@ -45,12 +45,15 @@ Antes de começar, certifique-se de ter instalado:
 - [npm](https://www.npmjs.com/) (já vem com o Node.js)
 - A **API back-end** rodando localmente (por padrão em `http://localhost:3000`)
 
+
 ## 🚀 Primeiras Configurações
+
+> Caso não queira seguir com os passos de clonar o repositório e instalar as dependências, você pode acessar a aplicação [clicando aqui](https://mini-twitter-kappa.vercel.app/). E caso opte por essa opção, lembre de estar com sua api rodando localmente. 
 
 ### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/mini-twitter.git
+git clone https://github.com/brunoo85/mini-twitter.git
 cd mini-twitter
 ```
 
