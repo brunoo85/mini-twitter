@@ -16,26 +16,30 @@ O Mini Twitter consome uma API REST externa. As principais funcionalidades inclu
 - **Busca** — Pesquisa de posts com debounce em tempo real
 - **Tema claro/escuro** — Alternância de tema na interface
 
-
-
 ## 🛠️ Tecnologias
 
-| Categoria          | Tecnologia                                                  |
-| ------------------ | ----------------------------------------------------------- |
-| **Framework**      | [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) |
-| **Bundler**        | [Vite 7](https://vite.dev/)                                |
-| **Estilização**    | [Tailwind CSS v4](https://tailwindcss.com/) + [Shadcn UI](https://ui.shadcn.com/) |
-| **Roteamento**     | [React Router DOM v7](https://reactrouter.com/)            |
-| **Estado servidor**| [TanStack React Query v5](https://tanstack.com/query)      |
-| **Estado global**  | [Zustand](https://zustand.docs.pmnd.rs/)                   |
-| **HTTP Client**    | [Axios](https://axios-http.com/)                           |
-| **Validação**      | [Zod](https://zod.dev/) + [React Hook Form](https://react-hook-form.com/) |
-| **Notificações**   | [Sonner](https://sonner.emilkowal.dev/)                    |
-| **Ícones**         | [Lucide React](https://lucide.dev/)                        |
-| **Testes unitários** | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) |
-| **Testes E2E**     | [Playwright](https://playwright.dev/)                      |
+| Categoria            | Tecnologia                                                                        |
+| -------------------- | --------------------------------------------------------------------------------- |
+| **Framework**        | [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)    |
+| **Bundler**          | [Vite 7](https://vite.dev/)                                                       |
+| **Estilização**      | [Tailwind CSS v4](https://tailwindcss.com/) + [Shadcn UI](https://ui.shadcn.com/) |
+| **Roteamento**       | [React Router DOM v7](https://reactrouter.com/)                                   |
+| **Estado servidor**  | [TanStack React Query v5](https://tanstack.com/query)                             |
+| **Estado global**    | [Zustand](https://zustand.docs.pmnd.rs/)                                          |
+| **HTTP Client**      | [Axios](https://axios-http.com/)                                                  |
+| **Validação**        | [Zod](https://zod.dev/) + [React Hook Form](https://react-hook-form.com/)         |
+| **Notificações**     | [Sonner](https://sonner.emilkowal.dev/)                                           |
+| **Ícones**           | [Lucide React](https://lucide.dev/)                                               |
+| **Testes unitários** | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/)   |
+| **Testes E2E**       | [Playwright](https://playwright.dev/)                                             |
 
+## 💻 Testar a usabilidade (método rápido)
 
+Caso não queira seguir com os passos de clonar o repositório e instalar as dependências, apenas testar a usabilidade do sistema E estiver com a api rodando na porta 3000, você pode acessar a aplicação [clicando aqui](https://mini-twitter-kappa.vercel.app/).
+
+> Caso você abra o projeto e não tenha nenhum post, rode o seed novamente da api para aparecer os dados, é um bug comum.
+
+Caso queira fazer o clone do projeto, é só seguir os passos descritos nas sessões abaixo.
 
 ## ⚙️ Pré-requisitos
 
@@ -45,10 +49,7 @@ Antes de começar, certifique-se de ter instalado:
 - [npm](https://www.npmjs.com/) (já vem com o Node.js)
 - A **API back-end** rodando localmente (por padrão em `http://localhost:3000`)
 
-
 ## 🚀 Primeiras Configurações
-
-> Caso não queira seguir com os passos de clonar o repositório e instalar as dependências, você pode acessar a aplicação [clicando aqui](https://mini-twitter-kappa.vercel.app/). E caso opte por essa opção, lembre de estar com sua api rodando localmente. 
 
 ### 1. Clonar o repositório
 
@@ -81,7 +82,6 @@ npm run dev
 
 A aplicação estará disponível em **http://localhost:5173** (porta padrão do Vite).
 
-
 ## 🧪 Testes
 
 ### Testes unitários (Vitest)
@@ -113,26 +113,26 @@ npm run e2e:headed
 
 ## 📜 Scripts Disponíveis
 
-| Comando              | Descrição                                    |
-| -------------------- | -------------------------------------------- |
-| `npm run dev`        | Inicia o servidor de desenvolvimento         |
-| `npm run build`      | Gera o build de produção                     |
-| `npm run preview`    | Visualiza o build de produção localmente     |
-| `npm run lint`       | Executa o ESLint no projeto                  |
-| `npm run test`       | Executa os testes unitários                  |
-| `npm run test:watch` | Executa os testes em modo watch              |
+| Comando                 | Descrição                                    |
+| ----------------------- | -------------------------------------------- |
+| `npm run dev`           | Inicia o servidor de desenvolvimento         |
+| `npm run build`         | Gera o build de produção                     |
+| `npm run preview`       | Visualiza o build de produção localmente     |
+| `npm run lint`          | Executa o ESLint no projeto                  |
+| `npm run test`          | Executa os testes unitários                  |
+| `npm run test:watch`    | Executa os testes em modo watch              |
 | `npm run test:coverage` | Executa os testes com relatório de cobertura |
-| `npm run e2e`        | Executa os testes E2E (headless)             |
-| `npm run e2e:headed` | Executa os testes E2E com navegador visível  |
+| `npm run e2e`           | Executa os testes E2E (headless)             |
+| `npm run e2e:headed`    | Executa os testes E2E com navegador visível  |
 
 ---
 
 ## 🗂️ Rotas da Aplicação
 
-| Rota     | Página                          | Acesso     |
-| -------- | ------------------------------- | ---------- |
-| `/`      | Timeline de posts               | Público    |
-| `/login` | Login e Cadastro de usuário     | Público    |
+| Rota     | Página                      | Acesso  |
+| -------- | --------------------------- | ------- |
+| `/`      | Timeline de posts           | Público |
+| `/login` | Login e Cadastro de usuário | Público |
 
 ---
 
@@ -144,8 +144,6 @@ A autenticação é baseada em **JWT (JSON Web Token)**:
 2. O token JWT é armazenado no `localStorage` (`token-user`)
 3. Todas as requisições autenticadas enviam o token via header `Authorization: Bearer <token>`
 4. Em caso de resposta `401 Unauthorized`, o token é removido e o usuário é redirecionado para a timeline
-
-
 
 ## 📄 Licença
 
