@@ -51,6 +51,8 @@ Antes de começar, certifique-se de ter instalado:
 
 ## 🚀 Primeiras Configurações
 
+> Caso não queira seguir com os passos de clonar o repositório e instalar as dependências, você pode acessar a aplicação [clicando aqui](https://mini-twitter-seven-chi.vercel.app/). E caso opte por essa opção, lembre de estar com sua api rodando localmente.
+
 ### 1. Clonar o repositório
 
 ```bash
