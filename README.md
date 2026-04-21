@@ -37,6 +37,8 @@ O Mini Twitter consome uma API REST externa. As principais funcionalidades inclu
 
 Caso não queira seguir com os passos de clonar o repositório e instalar as dependências, apenas testar a usabilidade do sistema E estiver com a api rodando na porta 3000, você pode acessar a aplicação [clicando aqui](https://mini-twitter-kappa.vercel.app/).
 
+> Link do repositório da API: [Clique aqui](https://github.com/brunoo85/mini-twitter-backend)
+
 > Caso você abra o projeto e não tenha nenhum post, rode o seed novamente da api para aparecer os dados, é um bug comum.
 
 Caso queira fazer o clone do projeto, é só seguir os passos descritos nas sessões abaixo.
